@@ -10,24 +10,26 @@ body {
   background: #000;
   overflow: hidden;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
 }
 
 h1 {
   position: fixed;
-  top: 20px;
+  top: max(20px, env(safe-area-inset-top));
   left: 50%;
   transform: translateX(-50%);
   color: white;
   z-index: 100;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
   font-size: 24px;
+  width: min(90vw, 560px);
 }
 
 body > p {
   position: fixed;
-  top: 60px;
+  top: max(60px, calc(env(safe-area-inset-top) + 40px));
   left: 50%;
   transform: translateX(-50%);
   color: white;
@@ -35,13 +37,14 @@ body > p {
   text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
   font-size: 18px;
   font-weight: bold;
+  width: min(90vw, 560px);
 }
 
 .room {
   position: fixed;
-  inset: 0;
+  inset: max(100px, calc(env(safe-area-inset-top) + 84px)) 0 max(110px, calc(env(safe-area-inset-bottom) + 24px));
   width: 100vw;
-  height: 100vh;
+  overflow: hidden;
 }
 
 .background {
@@ -57,9 +60,14 @@ body > p {
 /* zones invisibles */
 .zone {
   position: absolute;
+  border: 0;
+  border-radius: 999px;
   cursor: pointer;
   z-index: 50;
   background-color: transparent;
+  padding: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* debug optionnel pour voir les zones */
@@ -84,7 +92,7 @@ body > p {
 
 #message {
   position: fixed;
-  bottom: 30px;
+  bottom: max(30px, calc(env(safe-area-inset-bottom) + 16px));
   left: 50%;
   transform: translateX(-50%);
   color: #00ff00;
@@ -97,8 +105,32 @@ body > p {
   border-radius: 10px;
   border: 2px solid #00ff00;
   display: none;
+  width: min(calc(100vw - 32px), 720px);
 }
 
 #message:not(:empty) {
   display: block;
+}
+
+@media (max-width: 640px) {
+  h1 {
+    top: max(12px, env(safe-area-inset-top));
+    font-size: 20px;
+  }
+
+  body > p {
+    top: max(46px, calc(env(safe-area-inset-top) + 34px));
+    font-size: 16px;
+  }
+
+  .room {
+    inset: max(82px, calc(env(safe-area-inset-top) + 70px)) 0 max(96px, calc(env(safe-area-inset-bottom) + 20px));
+  }
+
+  #message {
+    bottom: max(16px, calc(env(safe-area-inset-bottom) + 8px));
+    width: calc(100vw - 24px);
+    padding: 12px 16px;
+    font-size: 18px;
+  }
 }
