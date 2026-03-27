@@ -1,0 +1,71 @@
+/* ═══════════════════════════════════════════════════════
+   PAGE JEU (Frame)
+═══════════════════════════════════════════════════════ */
+#page-game {
+  width: 100%;
+  min-height: 100vh;
+  display: none;
+  flex-direction: column;
+}
+
+#page-game.active {
+  display: flex;
+}
+
+.game-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  height: 36px;
+  background: rgba(7,6,10,0.92);
+  border-bottom: 1px solid var(--gold-dim);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 14px;
+  backdrop-filter: blur(6px);
+}
+
+.game-back-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.28em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: color 0.2s;
+}
+
+.game-back-btn:hover {
+  color: var(--gold);
+}
+
+.game-sep {
+  color: var(--gold-dim);
+  font-size: 0.5rem;
+}
+
+.game-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+#game-frame-container {
+  flex: 1;
+  margin-top: 36px;
+  position: relative;
+}
+
+#game-frame {
+  width: 100%;
+  height: calc(100vh - 36px);
+  border: none;
+  display: block;
+}

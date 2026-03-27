@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Bibliothèque Rebelle</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0806;
+  --gold:#c9a84c;
+  --gold-dim:#7a6330;
+  --ink:#e8dcc8;
+  --ink-dim:#8a7a60;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Crimson Text',serif;color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(201,168,76,0.05) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(155,89,182,0.05) 0%,transparent 50%);pointer-events:none;}
+#header{position:relative;z-index:10;text-align:center;padding:10px 20px 5px;width:100%;border-bottom:1px solid var(--gold-dim);background:linear-gradient(180deg,rgba(10,8,6,0.98) 0%,transparent 100%);}
+#header h1{font-family:'Cinzel',serif;font-size:1rem;font-weight:900;color:var(--gold);letter-spacing:0.3em;text-transform:uppercase;}
+#header p{font-size:0.78rem;color:var(--ink-dim);font-style:italic;margin-top:2px;}
+#hud{display:flex;gap:28px;align-items:center;justify-content:center;padding:7px 20px;position:relative;z-index:10;width:100%;}
+.hud-item{text-align:center;}
+.hud-label{font-family:'Cinzel',serif;font-size:0.52rem;color:var(--ink-dim);letter-spacing:0.2em;text-transform:uppercase;}
+.hud-value{font-family:'Cinzel',serif;font-size:1.05rem;color:var(--gold);font-weight:700;}
+#order-display{display:flex;gap:6px;align-items:center;justify-content:center;padding:4px 0;position:relative;z-index:10;}
+.order-book{width:22px;height:22px;border-radius:3px;border:2px solid rgba(255,255,255,0.2);transition:all 0.3s;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:0.52rem;color:rgba(0,0,0,0.7);font-weight:700;}
+.order-book.collected{opacity:0.35;transform:scale(0.85);}
+.order-book.next{border-color:white;animation:pulse-book 1s ease-in-out infinite;}
+@keyframes pulse-book{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
+
+.order-arrow{color:var(--ink-dim);font-size:0.7rem;}
+#canvas-wrapper{position:relative;z-index:5;flex:1;display:flex;align-items:center;justify-content:center;padding:4px;}
+#maze-canvas{display:block;border:1px solid var(--gold-dim);box-shadow:0 0 30px rgba(201,168,76,0.15);image-rendering:pixelated;}
+#overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.85);backdrop-filter:blur(4px);}
+#overlay.hidden{display:none;}
+.overlay-card{background:linear-gradient(145deg,#1e1608,#0e0c08);border:1px solid var(--gold-dim);border-radius:4px;padding:30px 36px;max-width:460px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.8);position:relative;}
+.overlay-card::before{content:'✦ ✦ ✦';position:absolute;top:11px;left:50%;transform:translateX(-50%);color:var(--gold-dim);font-size:0.55rem;letter-spacing:0.4em;}
+.overlay-title{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold);font-weight:900;margin-bottom:7px;margin-top:10px;letter-spacing:0.1em;}
+.overlay-subtitle{font-style:italic;color:var(--ink-dim);font-size:0.88rem;margin-bottom:18px;line-height:1.5;}
+.overlay-order{display:flex;gap:8px;justify-content:center;align-items:center;margin:14px 0;flex-wrap:wrap;}
+.overlay-book{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.overlay-book-square{width:30px;height:30px;border-radius:4px;border:2px solid rgba(255,255,255,0.3);}
+.overlay-book-label{font-family:'Cinzel',serif;font-size:0.48rem;color:var(--ink-dim);}
+.overlay-arrow{color:var(--gold-dim);font-size:1.1rem;margin-bottom:14px;}
+.overlay-timer-bar-wrap{height:3px;background:rgba(255,255,255,0.1);border-radius:2px;margin-top:18px;overflow:hidden;}
+.overlay-timer-bar{height:100%;background:var(--gold);border-radius:2px;transition:width 0.1s linear;width:100%;}
+.overlay-hint{font-size:0.72rem;color:var(--ink-dim);margin-top:7px;font-style:italic;}
+.result-icon{font-size:2.3rem;margin-bottom:7px;}
+.btn-restart{margin-top:18px;padding:9px 26px;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+.btn-restart:hover{background:var(--gold);color:var(--bg);}
+#touch-controls{display:none;position:relative;z-index:10;padding:5px;}
+.dpad{display:grid;grid-template-columns:repeat(3,42px);grid-template-rows:repeat(3,42px);gap:3px;}
+.dpad-btn{background:rgba(201,168,76,0.1);border:1px solid var(--gold-dim);color:var(--gold);font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:3px;user-select:none;-webkit-tap-highlight-color:transparent;transition:background 0.1s;}
+.dpad-btn:active{background:rgba(201,168,76,0.3);}
+.dpad-btn.empty{background:transparent;border:none;pointer-events:none;}
+@media(max-width:600px){#touch-controls{display:flex;justify-content:center;}body{overflow-y:auto;}}
+
+@keyframes flash-red{0%,100%{box-shadow:0 0 8px rgba(201,168,76,0.15);}50%{box-shadow:0 0 14px rgba(255,50,50,0.38),inset 0 0 10px rgba(255,0,0,0.08);}}
+.flash-wrong{animation:flash-red 0.25s ease;}
+
+@keyframes confetti-drop{0%{transform:translateY(-120px) rotate(0deg);opacity:0;}10%{opacity:1;}100%{transform:translateY(110vh) rotate(720deg);opacity:0;}}
+.confetti-drop{position:fixed;top:-30px;width:8px;height:14px;border-radius:2px;z-index:9999;pointer-events:none;animation:confetti-drop 2s linear forwards;}
+
+.overlay-card.congrats{animation:pop-zoom 0.6s ease both;}
+@keyframes pop-zoom{0%{transform:scale(0.8);opacity:0;}60%{transform:scale(1.08);opacity:1;}100%{transform:scale(1);opacity:1;}}
+</style>
+</head>
+<body>
+<div id="header">
+  <h1>Académie d'Astoria — La Bibliothèque</h1>
+  <p>Arrête de bouger ! Va ici !!</p>
+</div>
+<div id="hud">
+  <div class="hud-item"><div class="hud-label">Temps</div><div class="hud-value" id="timer-display">00:00</div></div>
+  <div class="hud-item"><div class="hud-label">Livres</div><div class="hud-value" id="books-display">0 / 5</div></div>
+  <div class="hud-item"><div class="hud-label">Essais</div><div class="hud-value" id="tries-display">0</div></div>
+</div>
+<div id="order-display"></div>
+<div id="canvas-wrapper"><canvas id="maze-canvas"></canvas></div>
+<div id="touch-controls">
+  <div class="dpad">
+    <div class="dpad-btn empty"></div><div class="dpad-btn" id="btn-up">▲</div><div class="dpad-btn empty"></div>
+    <div class="dpad-btn" id="btn-left">◀</div><div class="dpad-btn empty"></div><div class="dpad-btn" id="btn-right">▶</div>
+    <div class="dpad-btn empty"></div><div class="dpad-btn" id="btn-down">▼</div><div class="dpad-btn empty"></div>
+  </div>
+</div>
+<div id="overlay"><div class="overlay-card" id="overlay-card"></div></div>
+<script src="../Assets/js/utils/utils.js"></script>
+<script src="js/bibliotheque.js"></script>
+</body>
+</html>

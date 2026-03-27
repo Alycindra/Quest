@@ -1,0 +1,310 @@
+/* ═══════════════════════════════════════════════════════
+   PAGE ACCUEIL
+═══════════════════════════════════════════════════════ */
+#page-home {
+  width: 100%;
+  min-height: 100vh;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+#page-home.active {
+  display: flex;
+}
+
+/* restored default home backdrop: no heavy overlay */
+
+.home-header {
+  text-align: center;
+  margin-bottom: 52px;
+  animation: anim-down 0.9s ease both;
+}
+
+.home-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.5em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.home-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.5rem, 4vw, 2.7rem);
+  font-weight: 900;
+  color: var(--gold-light);
+  line-height: 1.15;
+  text-shadow: 0 0 40px rgba(200,169,110,0.4), 0 2px 4px rgba(0,0,0,0.8);
+}
+
+.home-title small {
+  display: block;
+  color: var(--ink-dim);
+  font-weight: 400;
+  font-size: 0.6em;
+  margin-top: 4px;
+}
+
+.home-sep {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  justify-content: center;
+}
+
+.sep-line {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim));
+}
+
+.sep-line.r {
+  background: linear-gradient(90deg, var(--gold-dim), transparent);
+}
+
+.sep-gem {
+  color: var(--gold);
+  font-size: 0.6rem;
+  animation: gem-pulse 3s ease-in-out infinite;
+}
+
+@keyframes gem-pulse {
+  0%, 100% {
+    text-shadow: 0 0 6px var(--gold);
+    opacity: 0.7;
+  }
+  50% {
+    text-shadow: 0 0 18px var(--gold);
+    opacity: 1;
+  }
+}
+
+/* ── Cards Row ── */
+.cards-row {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card-wrap {
+  width: 240px;
+  height: 300px;
+  perspective: 900px;
+  cursor: pointer;
+  animation: anim-up 0.9s ease both;
+}
+
+.card-wrap:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.card-wrap:nth-child(2) {
+  animation-delay: 0.35s;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-wrap.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-wrap:not(.flipped):hover .card-inner {
+  transform: translateY(-8px) rotateX(4deg);
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 28px 20px;
+  border: 1px solid var(--gold-dim);
+  overflow: hidden;
+}
+
+.card-face::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(200,169,110,0.08) 0%, transparent 60%),
+    linear-gradient(160deg, #1a1626 0%, #0d0b15 100%);
+}
+
+.card-face::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  z-index: 1;
+  border: 1px solid rgba(200,169,110,0.1);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.card-front {
+  z-index: 2;
+}
+
+.c-icon {
+  position: relative;
+  z-index: 2;
+  font-size: 3rem;
+  filter: drop-shadow(0 0 12px rgba(200,169,110,0.5));
+  transition: transform 0.3s, filter 0.3s;
+}
+
+.card-wrap:not(.flipped):hover .c-icon {
+  transform: scale(1.1) translateY(-4px);
+  filter: drop-shadow(0 0 22px rgba(200,169,110,0.85));
+}
+
+.c-label {
+  position: relative;
+  z-index: 2;
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--gold-light);
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.c-sub {
+  position: relative;
+  z-index: 2;
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  font-style: italic;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.c-hint {
+  position: relative;
+  z-index: 2;
+  font-family: 'Cinzel', serif;
+  font-size: 0.48rem;
+  letter-spacing: 0.3em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.3s;
+  margin-top: 4px;
+}
+
+.card-wrap:not(.flipped):hover .c-hint {
+  opacity: 1;
+}
+
+.c-shimmer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(105deg, transparent 40%, rgba(200,169,110,0.07) 50%, transparent 60%);
+  background-size: 200% 100%;
+  background-position: 200% 0;
+  transition: background-position 0.6s ease;
+}
+
+.card-wrap:not(.flipped):hover .c-shimmer {
+  background-position: -50% 0;
+}
+
+/* Keep card intros & transition; no extra forced glow shadow for debugging fidelity */
+
+.card-back {
+  transform: rotateY(180deg);
+  border-color: #3a1a28 !important;
+}
+
+.card-back::before {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(139,26,42,0.18) 0%, transparent 60%),
+    linear-gradient(160deg, #1e1230 0%, #0d0b15 100%) !important;
+}
+
+.cb-label {
+  position: relative;
+  z-index: 2;
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--gold-light);
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+.cb-enter {
+  position: relative;
+  z-index: 2;
+  margin-top: 4px;
+  padding: 9px 22px;
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cb-enter:hover {
+  background: var(--gold);
+  color: var(--bg);
+  border-color: var(--gold);
+}
+
+.cb-back {
+  position: relative;
+  z-index: 2;
+  font-size: 0.65rem;
+  color: var(--ink-dim);
+  font-style: italic;
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: color 0.2s;
+}
+
+.cb-back:hover {
+  color: var(--ink);
+}
+
+/* Responsive */
+@media (max-width: 560px) {
+  .card-wrap {
+    width: 200px;
+    height: 265px;
+  }
+  .cards-row {
+    gap: 20px;
+  }
+  .home-title {
+    font-size: 1.4rem;
+  }
+}

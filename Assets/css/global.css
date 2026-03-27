@@ -1,0 +1,139 @@
+/* ═══════════════════════════════════════════════════════
+   BASE GLOBALE
+═══════════════════════════════════════════════════════ */
+:root {
+  --bg:         #07060a;
+  --gold:       #c8a96e;
+  --gold-light: #e8cfa0;
+  --gold-dim:   #6b5a35;
+  --crimson:    #8b1a2a;
+  --ink:        #e2d5c0;
+  --ink-dim:    #7a6e5a;
+  --rune:       rgba(200,169,110,0.05);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: 'Crimson Text', serif;
+  color: var(--ink);
+}
+
+/* ── Backgrounds ── */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%,  rgba(139,26,42,.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 15% 100%, rgba(200,169,110,.07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 85% 80%,  rgba(80,40,120,.07) 0%, transparent 50%);
+}
+
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--rune) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rune) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black 20%, transparent 100%);
+}
+
+/* ── Particles ── */
+.particles {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--gold);
+  border-radius: 50%;
+  opacity: 0;
+  animation: float-p var(--dur, 8s) var(--delay, 0s) infinite ease-in-out;
+}
+
+@keyframes float-p {
+  0% {
+    opacity: 0;
+    transform: translateY(0) translateX(0) scale(1);
+  }
+  20% {
+    opacity: 0.5;
+  }
+  80% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-110px) translateX(var(--drift, 20px)) scale(0.3);
+  }
+}
+
+/* ── Sections/Pages ── */
+.page {
+  display: none;
+  position: relative;
+  z-index: 2;
+}
+
+.page.active {
+  display: block;
+}
+
+/* ── Animations communes ── */
+@keyframes anim-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes anim-down {
+  from {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-transition {
+  animation: page-in 0.35s ease both;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap');
